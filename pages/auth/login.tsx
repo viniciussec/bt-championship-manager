@@ -23,7 +23,7 @@ export default function Login() {
               <label className="font-semibold text-white " htmlFor="">
                 Senha
               </label>
-              <input type="text" className="p-1 drop-shadow-lg" />
+              <input type="password" className="p-1 drop-shadow-lg" />
             </div>
             <button className="rounded-2xl bg-[#F7BC6D] text-white font-semibold px-10 py-1">
               Entrar

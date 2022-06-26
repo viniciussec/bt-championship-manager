@@ -29,13 +29,13 @@ export default function Register() {
               <label className="font-semibold text-white" htmlFor="">
                 Senha
               </label>
-              <input type="text" className="p-1 drop-shadow-lg" />
+              <input type="password" className="p-1 drop-shadow-lg" />
             </div>
             <div className="flex flex-col w-full p-4 space-y-1">
               <label className="font-semibold text-white" htmlFor="">
                 Confirmar senha
               </label>
-              <input type="text" className="p-1 drop-shadow-lg" />
+              <input type="password" className="p-1 drop-shadow-lg" />
             </div>
             <div className="flex flex-col w-full p-4 space-y-1">
               <label className="font-semibold text-white" htmlFor="">
