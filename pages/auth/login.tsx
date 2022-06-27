@@ -17,7 +17,7 @@ export default function Login() {
               <label className="font-semibold text-white" htmlFor="">
                 Email
               </label>
-              <input type="text" className="p-1 drop-shadow-lg" />
+              <input name="email" type="email" className="p-1 drop-shadow-lg" />
             </div>
             <div className="flex flex-col w-full p-4 space-y-1">
               <label className="font-semibold text-white " htmlFor="">
