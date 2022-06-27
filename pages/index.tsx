@@ -1,7 +1,9 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Guest from "../layouts/Guest";
 
 export default function Index() {
+  const router = useRouter();
   return (
     <div>
       <Head>
@@ -10,12 +12,15 @@ export default function Index() {
       </Head>
       <Guest>
         <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
-          <div className="flex justify-end w-full">
-            <button className="m-4 bg-[#6EA8F7] text-white px-4 py-2 rounded-md font-medium">
+          <div className="flex w-3/4">
+            <button
+              onClick={() => router.push("create")}
+              className="mt-4 bg-[#6EA8F7] text-white px-4 py-2 rounded-md font-medium"
+            >
               Novo campeonato
             </button>
           </div>
-          <div className="w-2/3 mt-6 bg-[#6EA8F7] rounded-md">
+          <div className="w-3/4 mt-6 bg-[#6EA8F7] rounded-md">
             <div className="flex flex-col">
               <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">

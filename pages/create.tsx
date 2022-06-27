@@ -1,11 +1,24 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Guest from "../layouts/Guest";
 
 export default function Index() {
+  const router = useRouter();
+  
   return (
     <div>
       <Guest>
         <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
+          <div className="w-3/4 mt-2">
+            <div className="w-full">
+              <button
+                onClick={() => router.back()}
+                className="mt-4 bg-[#6EA8F7] text-white px-4 py-2 rounded-md font-medium"
+              >
+                Voltar
+              </button>
+            </div>
+          </div>
           <div className="w-3/4 p-4 mt-4 bg-white rounded-md">
             <form action="">
               <div className="grid grid-cols-2 gap-4">
@@ -42,9 +55,8 @@ export default function Index() {
                 <div className="flex flex-col ">
                   <label htmlFor="">Formato</label>
                   <select className="bg-[#6EA8F7]/30 rounded-md p-2">
-                    <option value="ce">Masculino</option>
-                    <option value="ce">Feminino</option>
-                    <option value="ce">Misto</option>
+                    <option value="ce">Fase de grupos</option>
+                    <option value="ce">Eliminatórias</option>
                   </select>
                 </div>
                 <div className="flex flex-col ">
@@ -90,7 +102,7 @@ export default function Index() {
                     id=""
                     cols={30}
                     rows={10}
-                    className="bg-[#6EA8F7]/30 rounded-md"
+                    className="bg-[#6EA8F7]/30 rounded-md p-2"
                   ></textarea>
                 </div>
               </div>
