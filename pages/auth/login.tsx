@@ -1,4 +1,3 @@
-import MainNav from "../../components/MainNav";
 import Guest from "../../layouts/Guest";
 
 export default function Login() {
