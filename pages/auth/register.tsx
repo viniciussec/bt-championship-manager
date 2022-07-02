@@ -111,8 +111,7 @@ class Register extends React.Component {
                     email: this.state.email,
                     type: this.state.accountType
                   }),
-                })
-                .then(response => {
+                }).then(response => {
                   return response.json();
                 }).then(jsonResponse => {
                   if (jsonResponse.success) {
@@ -121,7 +120,7 @@ class Register extends React.Component {
                     this.setState({ message: jsonResponse.message, messageType: 'error'});
                   }
                 }).catch (error => {
-                  this.setState({ message: error, messageType: 'error'});
+                  this.setState({ message: 'Erro no servidor.', messageType: 'error'});
                 })
               }}
               >
