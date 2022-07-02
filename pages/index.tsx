@@ -61,7 +61,10 @@ export default function Index() {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr className="bg-white border-b">
+                        <tr
+                          onClick={() => router.push("match-list")}
+                          className="bg-white border-b cursor-pointer"
+                        >
                           <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                             Campeonato municipal
                           </td>
