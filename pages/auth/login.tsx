@@ -18,13 +18,19 @@ export default function Login() {
                 <label className="" htmlFor="">
                   Email
                 </label>
-                <input type="text" className="p-1 border drop-shadow-lg border-1" />
+                <input
+                  type="email"
+                  className="p-1 border drop-shadow-lg border-1"
+                />
               </div>
               <div className="flex flex-col w-full p-4 space-y-1">
                 <label className="" htmlFor="">
                   Senha
                 </label>
-                <input type="text" className="p-1 border drop-shadow-lg border-1" />
+                <input
+                  type="password"
+                  className="p-1 border drop-shadow-lg border-1"
+                />
               </div>
               <button className="border border-1 drop-shadow-md rounded-2xl bg-[#F7BC6D] text-white m-4  font-semibold px-10 py-1">
                 Entrar
