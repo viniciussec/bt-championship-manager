@@ -10,6 +10,8 @@ class Register extends React.Component {
     password: "",
     confirmPassword: "",
     accountType: "",
+    messageType: "",
+    message: ""
   }
 
   render() {
@@ -71,7 +73,12 @@ class Register extends React.Component {
               <label className="font-semibold text-white" htmlFor="">
                 Confirmar senha
               </label>
-              <input type="password" className="p-1 drop-shadow-lg" />
+              <input
+                type="password"
+                className="p-1 drop-shadow-lg"
+                value={this.state.confirmPassword}
+                onChange={(e) => this.setState({ confirmPassword: e.target.value })}
+                />
             </div>
             <div className="flex flex-col w-full p-4 space-y-1">
               <label className="font-semibold text-white" htmlFor="">
@@ -85,14 +92,56 @@ class Register extends React.Component {
             </div>
             <button
               className="rounded-2xl bg-[#F7BC6D] text-white font-semibold px-10 py-1"
-              onClick={()=> {alert("Conta criada!")}}
+              onClick={()=> {
+                if (this.state.confirmPassword != this.state.password) {
+                  this.setState({ message: 'Senhas nao coincidem!', messageType: 'error'});
+                  console.log(this.state.confirmPassword);
+                  console.log(this.state.password);
+                  return;
+                }
+                fetch('http://localhost:8080/auth/register', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    username: this.state.fullName,
+                    password: this.state.password,
+                    gender: '',
+                    email: this.state.email,
+                    type: this.state.accountType
+                  }),
+                })
+                .then(response => {
+                  return response.json();
+                }).then(jsonResponse => {
+                  if (jsonResponse.success) {
+                    this.setState({ message: jsonResponse.message, messageType: 'success'});
+                  } else {
+                    this.setState({ message: jsonResponse.message, messageType: 'error'});
+                  }
+                }).catch (error => {
+                  this.setState({ message: error, messageType: 'error'});
+                })
+              }}
               >
               Registrar-se
             </button>
+            {this.state.messageType == 'success' &&
+              <label className="font-semibold text-white bac bg-[#10FF10] flex flex-col w-full p-4 space-y-1" htmlFor="">
+                {this.state.message}
+              </label>
+            }
+            {this.state.messageType == 'error' &&
+              <label className="font-semibold text-white bac bg-[#FF1010] flex flex-col w-full p-4 space-y-1" htmlFor="">
+                {this.state.message}
+              </label>
+            }
           </div>
         </div>
       </div>
     </Guest>
   }
 }
+
 export default Register;
