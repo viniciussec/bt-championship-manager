@@ -1,9 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function MainNav() {
   return (
     <div className="flex justify-between p-3 bg-white drop-shadow-xl">
-      <div>Logo</div>
+      <Link href="/" >
+        <Image className="cursor-pointer" alt="Logo" height="40" width="40" src="/logo_bt.png" />
+      </Link>
       <div className="flex justify-between space-x-4">
         <Link href="/auth/register">
           <button className="font-medium">Registre-se</button>
