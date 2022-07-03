@@ -1,22 +1,18 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Button from "../components/Button";
 import Guest from "../layouts/Guest";
 
 export default function Index() {
   const router = useRouter();
-  
+
   return (
     <div>
       <Guest>
         <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
           <div className="w-3/4 mt-2">
             <div className="w-full">
-              <button
-                onClick={() => router.back()}
-                className="mt-4 bg-[#6EA8F7] text-white px-4 py-2 rounded-md font-medium"
-              >
-                Voltar
-              </button>
+              <Button label="Voltar" onClick={() => router.back()}></Button>
             </div>
           </div>
           <div className="w-3/4 p-4 mt-4 bg-white rounded-md">

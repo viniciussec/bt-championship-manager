@@ -3,6 +3,7 @@ import Guest from "../../layouts/Guest";
 // import { useRouter } from "next/router";
 import PasswordStrengthBar from "react-password-strength-bar";
 import API from "../../services/api";
+import Button from "../../components/Button";
 
 export default class Register extends React.Component {
   state = {
@@ -36,8 +37,8 @@ export default class Register extends React.Component {
       console.log(response);
       this.setState({
         message: response.data.message,
-        messageType: response.data.success ? 'success' : 'error',
-      })
+        messageType: response.data.success ? "success" : "error",
+      });
     } catch (e) {
       this.setState({
         message: "Erro no servidor.",
@@ -141,22 +142,24 @@ export default class Register extends React.Component {
                     value={this.state.accountType}
                     onChange={(e) =>
                       this.setState({ accountType: e.target.value })
-                    }>
+                    }
+                  >
                     <option value="admin">Administrador</option>
                     <option value="athlete">Atleta</option>
                     <option value="spectator">Espectador</option>
                   </select>
                 </div>
-                <button
+                <Button
                   onClick={this.onSubmit}
+                  label="Registrar"
                   className="border border-1 m-4 rounded-2xl bg-[#F7BC6D] text-white font-semibold px-10 py-1"
-                >
-                  Registrar-se
-                </button>
+                />
                 {!!this.state.messageType.length && (
                   <label
                     className={`font-semibold text-white bac flex flex-col w-full p-4 space-y-1 
-                    bg-[#${this.state.messageType == 'error' ? 'FF4F58': '2BAE66'}] 
+                    bg-[#${
+                      this.state.messageType == "error" ? "FF4F58" : "2BAE66"
+                    }] 
                     `}
                     htmlFor=""
                   >

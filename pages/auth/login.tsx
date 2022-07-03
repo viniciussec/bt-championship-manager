@@ -1,5 +1,6 @@
 import Guest from "../../layouts/Guest";
 import React from "react";
+import Button from "../../components/Button";
 
 export default class Login extends React.Component {
   state = {
@@ -29,9 +30,7 @@ export default class Login extends React.Component {
                   <input
                     type="email"
                     className="p-1 border drop-shadow-lg border-1"
-                    onChange={(e) =>
-                      this.setState({ email: e.target.value })
-                    }
+                    onChange={(e) => this.setState({ email: e.target.value })}
                   />
                 </div>
                 <div className="flex flex-col w-full p-4 space-y-1">
@@ -46,17 +45,17 @@ export default class Login extends React.Component {
                     }
                   />
                 </div>
-                <button
-                className="border border-1 drop-shadow-md rounded-2xl bg-[#F7BC6D] text-white m-4  font-semibold px-10 py-1"
-                onClick={()=>{
-                  fetch("/api/auth/signIn", {
+                <Button
+                  className="border border-1 drop-shadow-md rounded-2xl bg-[#F7BC6D] text-white m-4  font-semibold px-10 py-1"
+                  onClick={() => {
+                    fetch("/api/auth/signIn", {
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",
                       },
                       body: JSON.stringify({
                         email: this.state.email,
-                        password: this.state.password
+                        password: this.state.password,
                       }),
                     })
                       .then((response) => {
@@ -81,15 +80,15 @@ export default class Login extends React.Component {
                           messageType: "error",
                         });
                       });
-                  }
-                }
-                >
-                  Entrar
-                </button>
+                  }}
+                  label="Entrar"
+                />
                 {!!this.state.messageType.length && (
                   <label
                     className={`font-semibold text-white bac flex flex-col w-full p-4 space-y-1 
-                    bg-[#${(this.state.messageType == 'error') ? 'FF4F58': '2BAE66'}] 
+                    bg-[#${
+                      this.state.messageType == "error" ? "FF4F58" : "2BAE66"
+                    }] 
                     `}
                     htmlFor=""
                   >

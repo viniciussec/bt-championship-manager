@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Button from "../components/Button";
 import Guest from "../layouts/Guest";
 
 export default function Index() {
@@ -30,9 +31,7 @@ export default function Index() {
                   </label>
                 </div>
               </div>
-              <button className="bg-[#6EA8F7] text-white font-medium px-4 py-2 rounded-md mt-4">
-                Submeter set
-              </button>
+              <Button label="Submeter set" />
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Button from "../components/Button";
 import Guest from "../layouts/Guest";
 
 export default function MatchList() {
@@ -7,12 +8,7 @@ export default function MatchList() {
     <Guest>
       <div className="bg-[#F7BC6D] h-screen flex flex-col items-center">
         <div className="w-3/4">
-          <button
-            onClick={() => router.push("/")}
-            className="mt-4 bg-[#6EA8F7] text-white px-4 py-2 rounded-md font-medium"
-          >
-            Voltar
-          </button>
+          <Button label="Voltar" onClick={() => router.push('/')} />
         </div>
         <div className="flex flex-col justify-center w-3/4 p-4 mt-4 bg-white rounded-md">
           <p className="text-lg font-semibold text-center">Fase de grupos</p>

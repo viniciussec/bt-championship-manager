@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Button from "../components/Button";
 import Guest from "../layouts/Guest";
 
 export default function Index() {
@@ -13,12 +14,7 @@ export default function Index() {
       <Guest>
         <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
           <div className="flex w-3/4">
-            <button
-              onClick={() => router.push("create")}
-              className="mt-4 bg-[#6EA8F7] text-white px-4 py-2 rounded-md font-medium"
-            >
-              Novo campeonato
-            </button>
+            <Button onClick={() => router.push("create")} label="Novo campeonato" />
           </div>
           <div className="w-3/4 mt-6 bg-[#6EA8F7] rounded-md">
             <div className="flex flex-col">
