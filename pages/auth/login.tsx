@@ -1,4 +1,3 @@
-import MainNav from "../../components/MainNav";
 import Guest from "../../layouts/Guest";
 import React from "react";
 

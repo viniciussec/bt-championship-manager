@@ -1,8 +1,8 @@
-import MainNav from "../../components/MainNav";
 import React from "react";
 import Guest from "../../layouts/Guest";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import PasswordStrengthBar from "react-password-strength-bar";
+import API from "../../services/api";
 
 export default class Register extends React.Component {
   state = {
@@ -13,6 +13,37 @@ export default class Register extends React.Component {
     accountType: "spectator",
     messageType: "",
     message: "",
+  };
+
+  onSubmit = async () => {
+    if (this.state.confirmPassword != this.state.password) {
+      this.setState({
+        message: "Senhas nao coincidem!",
+        messageType: "error",
+      });
+      console.log(this.state.confirmPassword);
+      console.log(this.state.password);
+      return;
+    }
+    try {
+      const response = await API.post("/auth/register", {
+        username: this.state.username,
+        password: this.state.password,
+        gender: "",
+        email: this.state.email,
+        type: this.state.accountType,
+      });
+      console.log(response);
+      this.setState({
+        message: response.data.message,
+        messageType: response.data.success ? 'success' : 'error',
+      })
+    } catch (e) {
+      this.setState({
+        message: "Erro no servidor.",
+        messageType: "error",
+      });
+    }
   };
 
   render() {
@@ -117,50 +148,7 @@ export default class Register extends React.Component {
                   </select>
                 </div>
                 <button
-                  onClick={() => {
-                    if (this.state.confirmPassword != this.state.password) {
-                      this.setState({
-                        message: "As senhas não coincidem!",
-                        messageType: "error",
-                      });
-                      return;
-                    }
-                    fetch("/api/auth/register", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        username: this.state.username,
-                        password: this.state.password,
-                        gender: "",
-                        email: this.state.email,
-                        type: this.state.accountType,
-                      }),
-                    })
-                      .then((response) => {
-                        return response.json();
-                      })
-                      .then((jsonResponse) => {
-                        if (jsonResponse.success) {
-                          this.setState({
-                            message: jsonResponse.message,
-                            messageType: "success",
-                          });
-                        } else {
-                          this.setState({
-                            message: jsonResponse.message,
-                            messageType: "error",
-                          });
-                        }
-                      })
-                      .catch((error) => {
-                        this.setState({
-                          message: "Erro no servidor.",
-                          messageType: "error",
-                        });
-                      });
-                  }}
+                  onClick={this.onSubmit}
                   className="border border-1 m-4 rounded-2xl bg-[#F7BC6D] text-white font-semibold px-10 py-1"
                 >
                   Registrar-se
