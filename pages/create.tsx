@@ -1,10 +1,24 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import Guest from "../layouts/Guest";
+import API from "../services/api";
 
 export default function Index() {
+  const [locations, setLocations] = useState<{ id: string; name: string }[]>(
+    []
+  );
+
   const router = useRouter();
+
+  useEffect(() => {
+    async function loadLocations() {
+      const response = await API.get("/locations");
+      setLocations(response.data);
+    }
+    loadLocations();
+  });
 
   return (
     <div>
@@ -43,9 +57,11 @@ export default function Index() {
                 <div className="flex flex-col ">
                   <label htmlFor="">Local</label>
                   <select className="bg-[#6EA8F7]/30 rounded-md p-2">
-                    <option value="ce">Arena original CE</option>
-                    <option value="ce">Arena 2</option>
-                    <option value="ce">Arena 3</option>
+                    {locations.map((location) => (
+                      <option key={location.id} value={location.id}>
+                        {location.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="flex flex-col ">

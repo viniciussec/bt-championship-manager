@@ -1,6 +1,7 @@
 import Guest from "../../layouts/Guest";
 import React from "react";
 import Button from "../../components/Button";
+import Swal from "sweetalert2";
 
 export default class Login extends React.Component {
   state = {
@@ -67,6 +68,7 @@ export default class Login extends React.Component {
                             message: jsonResponse.message,
                             messageType: "success",
                           });
+                          Swal.fire(jsonResponse.message, "", "success");
                         } else {
                           this.setState({
                             message: jsonResponse.message,
@@ -85,11 +87,11 @@ export default class Login extends React.Component {
                 />
                 {!!this.state.messageType.length && (
                   <label
-                    className={`font-semibold text-white bac flex flex-col w-full p-4 space-y-1 
-                    bg-[#${
-                      this.state.messageType == "error" ? "FF4F58" : "2BAE66"
-                    }] 
-                    `}
+                    className={`font-semibold text-white flex flex-col w-full p-4 space-y-1 ${
+                      this.state.messageType === "success"
+                        ? "bg-green-500"
+                        : "bg-red-500"
+                    }`}
                     htmlFor=""
                   >
                     {this.state.message}

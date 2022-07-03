@@ -14,7 +14,15 @@ export default function Index() {
       <Guest>
         <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
           <div className="flex w-3/4">
-            <Button onClick={() => router.push("create")} label="Novo campeonato" />
+            <Button
+              onClick={() => router.push("create")}
+              label="Novo campeonato"
+            />
+            <Button
+             className="ml-4"
+              onClick={() => router.push("locations/create")}
+              label="Novo local"
+            />
           </div>
           <div className="w-3/4 mt-6 bg-[#6EA8F7] rounded-md">
             <div className="flex flex-col">
