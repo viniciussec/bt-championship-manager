@@ -4,7 +4,7 @@ import Guest from "../../layouts/Guest";
 import { useRouter } from "next/router";
 import PasswordStrengthBar from "react-password-strength-bar";
 
-class Register extends React.Component {
+export default class Register extends React.Component {
   state = {
     username: "",
     email: "",
@@ -123,8 +123,6 @@ class Register extends React.Component {
                         message: "As senhas não coincidem!",
                         messageType: "error",
                       });
-                      console.log(this.state.confirmPassword);
-                      console.log(this.state.password);
                       return;
                     }
                     fetch("/api/auth/register", {
@@ -167,17 +165,11 @@ class Register extends React.Component {
                 >
                   Registrar-se
                 </button>
-                {this.state.messageType == "success" && (
+                {!!this.state.messageType.length && (
                   <label
-                    className="font-semibold text-white bac bg-[#2BAE66] flex flex-col w-full p-4 space-y-1"
-                    htmlFor=""
-                  >
-                    {this.state.message}
-                  </label>
-                )}
-                {this.state.messageType == "error" && (
-                  <label
-                    className="font-semibold text-white bac bg-[#FF4F58] flex flex-col w-full p-4 space-y-1"
+                    className={`font-semibold text-white bac flex flex-col w-full p-4 space-y-1 
+                    bg-[#${this.state.messageType == 'error' ? 'FF4F58': '2BAE66'}] 
+                    `}
                     htmlFor=""
                   >
                     {this.state.message}
@@ -191,5 +183,3 @@ class Register extends React.Component {
     );
   }
 }
-
-export default Register;

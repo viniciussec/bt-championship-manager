@@ -2,8 +2,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Guest from "../layouts/Guest";
 
-var ApiURL = "http://192.168.15.5:8080/";
-
 export default function Index() {
   const router = useRouter();
   return (
