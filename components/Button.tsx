@@ -1,6 +1,8 @@
+import { MouseEventHandler } from "react";
+
 type ButtonProps = {
   label: string;
-  onClick?: () => void;
+  onClick?: (e: any) => void;
   className?: string;
 };
 
