@@ -1,15 +1,16 @@
 import React from "react";
 import Guest from "../../layouts/Guest";
+// import { useRouter } from "next/router";
 import PasswordStrengthBar from "react-password-strength-bar";
 import API from "../../services/api";
 
-class Register extends React.Component {
+export default class Register extends React.Component {
   state = {
-    fullName: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
-    accountType: "",
+    accountType: "spectator",
     messageType: "",
     message: "",
   };
@@ -26,7 +27,7 @@ class Register extends React.Component {
     }
     try {
       const response = await API.post("/auth/register", {
-        username: this.state.fullName,
+        username: this.state.username,
         password: this.state.password,
         gender: "",
         email: this.state.email,
@@ -63,9 +64,9 @@ class Register extends React.Component {
                     Nome completo
                   </label>
                   <input
-                    value={this.state.fullName}
+                    value={this.state.username}
                     onChange={(e) =>
-                      this.setState({ fullName: e.target.value })
+                      this.setState({ username: e.target.value })
                     }
                     type="text"
                     className="p-1 border drop-shadow-lg border-1"
@@ -135,14 +136,16 @@ class Register extends React.Component {
                   <label className="" htmlFor="">
                     Tipo de conta
                   </label>
-                  <input
+                  <select
+                    className="p-1 border drop-shadow-lg border-1"
                     value={this.state.accountType}
                     onChange={(e) =>
                       this.setState({ accountType: e.target.value })
-                    }
-                    type="text"
-                    className="p-1 border drop-shadow-lg border-1"
-                  />
+                    }>
+                    <option value="admin">Administrador</option>
+                    <option value="athlete">Atleta</option>
+                    <option value="spectator">Espectador</option>
+                  </select>
                 </div>
                 <button
                   onClick={this.onSubmit}
@@ -150,17 +153,11 @@ class Register extends React.Component {
                 >
                   Registrar-se
                 </button>
-                {this.state.messageType == "success" && (
+                {!!this.state.messageType.length && (
                   <label
-                    className="font-semibold text-white bac bg-[#10FF10] flex flex-col w-full p-4 space-y-1"
-                    htmlFor=""
-                  >
-                    {this.state.message}
-                  </label>
-                )}
-                {this.state.messageType == "error" && (
-                  <label
-                    className="font-semibold text-white bac bg-[#FF1010] flex flex-col w-full p-4 space-y-1"
+                    className={`font-semibold text-white bac flex flex-col w-full p-4 space-y-1 
+                    bg-[#${this.state.messageType == 'error' ? 'FF4F58': '2BAE66'}] 
+                    `}
                     htmlFor=""
                   >
                     {this.state.message}
@@ -174,5 +171,3 @@ class Register extends React.Component {
     );
   }
 }
-
-export default Register;
