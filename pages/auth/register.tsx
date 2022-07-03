@@ -4,6 +4,7 @@ import Guest from "../../layouts/Guest";
 import PasswordStrengthBar from "react-password-strength-bar";
 import API from "../../services/api";
 import Button from "../../components/Button";
+import Swal from "sweetalert2";
 
 export default class Register extends React.Component {
   state = {
@@ -39,6 +40,15 @@ export default class Register extends React.Component {
         message: response.data.message,
         messageType: response.data.success ? "success" : "error",
       });
+
+      if (response.status === 201) {
+        Swal.fire({
+          title: "Sucesso!",
+          text: "Você foi cadastrado com sucesso!",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+      }
     } catch (e) {
       this.setState({
         message: "Erro no servidor.",
@@ -156,11 +166,11 @@ export default class Register extends React.Component {
                 />
                 {!!this.state.messageType.length && (
                   <label
-                    className={`font-semibold text-white bac flex flex-col w-full p-4 space-y-1 
-                    bg-[#${
-                      this.state.messageType == "error" ? "FF4F58" : "2BAE66"
-                    }] 
-                    `}
+                    className={`font-semibold text-white flex flex-col w-full p-4 space-y-1 ${
+                      this.state.messageType === "error"
+                        ? "bg-red-500"
+                        : "bg-green-500"
+                    }`}
                     htmlFor=""
                   >
                     {this.state.message}

@@ -32,6 +32,9 @@ export default function Create() {
   return (
     <Guest>
       <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
+        <div className="flex justify-start w-3/4">
+          <Button label="Voltar" onClick={() => router.back()}></Button>
+        </div>
         <div className="w-3/4 p-4 mt-4 bg-white rounded-md">
           <h1 className="text-center">Cadastrar local</h1>
           <form
