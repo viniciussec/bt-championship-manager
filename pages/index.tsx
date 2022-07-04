@@ -2,19 +2,24 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 import Guest from "../layouts/Guest";
-import moment from 'moment';
-import 'moment/locale/pt'
+import moment from "moment";
+import "moment/locale/pt";
+import { Championship } from "../types/Championship";
 
 export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:3000/api/championships');
+  const res = await fetch("http://localhost:3000/api/championships");
   const data = await res.json();
 
-  return{props: {championships: data}}
-}
+  return { props: { championships: data } };
+};
 
-export default function Index({championships}) {
+export default function Index({
+  championships,
+}: {
+  championships: Championship[];
+}) {
   const router = useRouter();
-  moment.locale('pt');
+  moment.locale("pt");
   return (
     <div>
       <Head>
@@ -29,9 +34,14 @@ export default function Index({championships}) {
               label="Novo campeonato"
             />
             <Button
-             className="ml-4"
+              className="ml-4"
               onClick={() => router.push("locations/create")}
               label="Novo local"
+            />
+            <Button
+              className="ml-4"
+              onClick={() => router.push("locations-list")}
+              label="Lista de locais"
             />
           </div>
           <div className="w-3/4 mt-6 bg-[#6EA8F7] rounded-md">
@@ -72,31 +82,34 @@ export default function Index({championships}) {
                           >
                             Término do Campeonato
                           </th>
-                          
                         </tr>
                       </thead>
-                      {championships.map(champ => (<tbody key={champ.id}><tr
-                          onClick={() => router.push("match-list")}                         
-                          className="bg-white border-b cursor-pointer"
-                        >
-                          <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                          {champ.name}
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                          { champ.description}
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                          {champ.location.name}
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                          {moment(champ.startDate).format('LLL')}
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                          {moment(champ.endDate).format('LLL')}
-                          </td>
-                        </tr></tbody>                
-                        ))}                   
-                      
+                      {championships.map((champ) => (
+                        <tbody key={champ.id}>
+                          <tr
+                            onClick={() =>
+                              router.push(`match-list/?id=${champ.id}`)
+                            }
+                            className="bg-white border-b cursor-pointer"
+                          >
+                            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                              {champ.name}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                              {champ.description}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                              {champ.location.name}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                              {moment(champ.startDate).format("LLL")}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                              {moment(champ.endDate).format("LLL")}
+                            </td>
+                          </tr>
+                        </tbody>
+                      ))}
                     </table>
                   </div>
                 </div>
