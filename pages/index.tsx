@@ -94,7 +94,7 @@ export default function Index({
                         championships.map((champ) => (
                           <tbody key={champ.id}>
                             <tr
-                              onClick={() => router.push(`championships/match-list`)}
+                              // onClick={() => router.push(`championships/match-list`)}
                               className="bg-white border-b cursor-pointer"
                             >
                               <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">

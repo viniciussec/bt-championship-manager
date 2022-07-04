@@ -24,7 +24,7 @@ export default function Create() {
     });
 
     if (response.status === 201) {
-      router.push("/");
+      router.push("/locations");
       Swal.fire("Local criado com sucesso!", "", "success");
     }
   }
