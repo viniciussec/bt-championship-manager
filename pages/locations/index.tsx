@@ -60,6 +60,12 @@ export default function LocationsList({
                         >
                           Número de Quadras
                         </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-4 text-sm font-bold text-left text-white"
+                        >
+                          Ações
+                        </th>
                       </tr>
                     </thead>
 
@@ -80,6 +86,14 @@ export default function LocationsList({
                           </td>
                           <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
                             {location.numberOfCourts}
+                          </td>
+                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                            <Button
+                              label="Editar"
+                              onClick={() =>
+                                router.push("locations/edit?id=" + location.id)
+                              }
+                            ></Button>
                           </td>
                         </tr>{" "}
                       </tbody>

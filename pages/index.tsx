@@ -27,7 +27,7 @@ export default function Index({
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Guest>
-        <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
+        <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
           <div className="flex w-3/4">
             <Button
               onClick={() => router.push("championships/create")}
@@ -82,17 +82,19 @@ export default function Index({
                           >
                             Término do Campeonato
                           </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-4 text-sm font-bold text-left text-white"
+                          >
+                            Ações
+                          </th>
                         </tr>
                       </thead>
                       {championships &&
                         championships.map((champ) => (
                           <tbody key={champ.id}>
                             <tr
-                              onClick={() =>
-                                router.push(
-                                  `championships/edit/?id=${champ.id}`
-                                )
-                              }
+                              onClick={() => router.push(`championships/match-list`)}
                               className="bg-white border-b cursor-pointer"
                             >
                               <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
@@ -109,6 +111,16 @@ export default function Index({
                               </td>
                               <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
                                 {moment(champ.endDate).format("LLL")}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                <Button
+                                  onClick={() =>
+                                    router.push(
+                                      `championships/edit?id=${champ.id}`
+                                    )
+                                  }
+                                  label="Editar"
+                                ></Button>
                               </td>
                             </tr>
                           </tbody>

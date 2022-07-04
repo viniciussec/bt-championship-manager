@@ -32,24 +32,27 @@ export default function Index() {
   useEffect(() => {
     async function loadData() {
       const response = await API.get("/championships?id=" + router.query.id);
-
-      setCategory(response.data[0]?.category);
-      setName(response.data[0]?.name);
-      setNumberOfParticipants(response.data[0]?.numberOfParticipants);
-      setDescription(response.data[0]?.description);
-      setLocationId(response.data[0]?.locationId);
-      setEnrollStartDate(
-        new Date(response.data[0]?.enrollStartDate).toISOString().split("T")[0]
-      );
-      setEnrollEndDate(
-        new Date(response.data[0]?.enrollEndDate).toISOString().split("T")[0]
-      );
-      setStartDate(
-        new Date(response.data[0]?.startDate).toISOString().split("T")[0]
-      );
-      setEndDate(
-        new Date(response.data[0]?.endDate).toISOString().split("T")[0]
-      );
+      if (response.data[0]) {
+        setCategory(response.data[0]?.category);
+        setName(response.data[0]?.name);
+        setNumberOfParticipants(response.data[0]?.numberOfParticipants);
+        setDescription(response.data[0]?.description);
+        setLocationId(response.data[0]?.locationId);
+        setEnrollStartDate(
+          new Date(response.data[0]?.enrollStartDate)
+            .toISOString()
+            .split("T")[0]
+        );
+        setEnrollEndDate(
+          new Date(response.data[0]?.enrollEndDate).toISOString().split("T")[0]
+        );
+        setStartDate(
+          new Date(response.data[0]?.startDate).toISOString().split("T")[0]
+        );
+        setEndDate(
+          new Date(response.data[0]?.endDate).toISOString().split("T")[0]
+        );
+      }
     }
     loadData();
   }, [router.query.id]);
@@ -79,7 +82,7 @@ export default function Index() {
         <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
           <div className="w-3/4 mt-2">
             <div className="w-full">
-              <Button label="Voltar" onClick={() => router.back()}></Button>
+              <Button label="Voltar" onClick={() => router.back()} />
             </div>
           </div>
           <div className="w-3/4 p-4 mt-4 bg-white rounded-md">
