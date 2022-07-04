@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Button from "../components/Button";
-import Guest from "../layouts/Guest";
-import API from "../services/api";
+import Button from "../../components/Button";
+import Guest from "../../layouts/Guest";
+import API from "../../services/api";
 
 export default function Index() {
   const router = useRouter();

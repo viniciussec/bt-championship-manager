@@ -1,8 +1,7 @@
-import Head from "next/head";
 import { useRouter } from "next/router";
-import Button from "../components/Button";
-import Guest from "../layouts/Guest";
-import { Location } from "../types/Location";
+import Button from "../../components/Button";
+import Guest from "../../layouts/Guest";
+import { Location } from "../../types/Location";
 
 export const getStaticProps = async () => {
   const res = await fetch("http://localhost:3000/api/locations");
@@ -11,7 +10,11 @@ export const getStaticProps = async () => {
   return { props: { locations: data } };
 };
 
-export default function LocationsList({ locations }: { locations: Location[] }) {
+export default function LocationsList({
+  locations,
+}: {
+  locations: Location[];
+}) {
   const router = useRouter();
   return (
     <Guest>

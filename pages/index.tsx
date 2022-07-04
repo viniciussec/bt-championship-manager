@@ -30,7 +30,7 @@ export default function Index({
         <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
           <div className="flex w-3/4">
             <Button
-              onClick={() => router.push("create")}
+              onClick={() => router.push("championships/create")}
               label="Novo campeonato"
             />
             <Button
@@ -40,7 +40,7 @@ export default function Index({
             />
             <Button
               className="ml-4"
-              onClick={() => router.push("locations-list")}
+              onClick={() => router.push("locations")}
               label="Lista de locais"
             />
           </div>
@@ -84,32 +84,35 @@ export default function Index({
                           </th>
                         </tr>
                       </thead>
-                      {championships.map((champ) => (
-                        <tbody key={champ.id}>
-                          <tr
-                            onClick={() =>
-                              router.push(`match-list/?id=${champ.id}`)
-                            }
-                            className="bg-white border-b cursor-pointer"
-                          >
-                            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                              {champ.name}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                              {champ.description}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                              {champ.location.name}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                              {moment(champ.startDate).format("LLL")}
-                            </td>
-                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                              {moment(champ.endDate).format("LLL")}
-                            </td>
-                          </tr>
-                        </tbody>
-                      ))}
+                      {championships &&
+                        championships.map((champ) => (
+                          <tbody key={champ.id}>
+                            <tr
+                              onClick={() =>
+                                router.push(
+                                  `championships/edit/?id=${champ.id}`
+                                )
+                              }
+                              className="bg-white border-b cursor-pointer"
+                            >
+                              <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                {champ.name}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                {champ.description}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                {champ.location.name}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                {moment(champ.startDate).format("LLL")}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                {moment(champ.endDate).format("LLL")}
+                              </td>
+                            </tr>
+                          </tbody>
+                        ))}
                     </table>
                   </div>
                 </div>
