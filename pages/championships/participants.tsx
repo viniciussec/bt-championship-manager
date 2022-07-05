@@ -1,9 +1,31 @@
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Guest from "../../layouts/Guest";
+import API from "../../services/api";
+
+type Participant = {
+  id: string;
+  name: string;
+  email: string;
+};
 
 export default function Participants() {
   const router = useRouter();
+
+  const [participants, setParticipants] = useState<Participant[]>();
+
+  useEffect(() => {
+    async function loadData() {
+      if (router.query.id) {
+        const response = await API.get("/championships?id=" + router.query.id);
+
+        setParticipants(response.data[0].participants);
+      }
+    }
+
+    loadData();
+  }, [router]);
 
   return (
     <Guest>
@@ -20,24 +42,17 @@ export default function Participants() {
             <div className="bg-[#6EA8F7] w-1/2 mt-4 rounded-md">
               <div className="bg-[#559cff] rounded-md flex justify-between p-4 text-lg font-semibold text-white border-b-2">
                 <p>Nome</p>
-                <p>Vitórias</p>
+                <p>Email</p>
               </div>
-              <div className="flex justify-between p-4 text-white border-b-2">
-                <p>João da Silva</p>
-                <p>6</p>
-              </div>
-              <div className="flex justify-between p-4 text-white border-b-2">
-                <p>Pedro dos Santos</p>
-                <p>1</p>
-              </div>
-              <div className="flex justify-between p-4 text-white border-b-2">
-                <p>Thor 4</p>
-                <p>1</p>
-              </div>
-              <div className="flex justify-between p-4 text-white">
-                <p>Elias</p>
-                <p>1</p>
-              </div>
+              {participants?.map((participant) => (
+                <div
+                  key={participant.id}
+                  className="flex justify-between p-4 text-white border-b-2"
+                >
+                  <p>{participant.name}</p>
+                  <p>{participant.email}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

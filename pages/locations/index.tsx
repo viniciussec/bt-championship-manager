@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Button from "../../components/Button";
 import Guest from "../../layouts/Guest";
@@ -6,20 +7,11 @@ import API from "../../services/api";
 import { useUserStore } from "../../store/user";
 import { Location } from "../../types/Location";
 
-export const getStaticProps = async () => {
-  const res = await fetch("http://localhost:3000/api/locations");
-  const data = await res.json();
-
-  return { props: { locations: data } };
-};
-
-export default function LocationsList({
-  locations,
-}: {
-  locations: Location[];
-}) {
+export default function LocationsList() {
   const router = useRouter();
   const { user } = useUserStore();
+
+  const [locations, setLocations] = useState<Location[]>([]);
 
   async function deleteLocation(id: string) {
     Swal.fire({
@@ -47,6 +39,16 @@ export default function LocationsList({
       }
     });
   }
+
+  useEffect(() => {
+    async function loadData() {
+      const res = await fetch("http://localhost:3000/api/locations");
+      const data = await res.json();
+
+      setLocations(data);
+    }
+    loadData();
+  });
 
   return (
     <Guest>

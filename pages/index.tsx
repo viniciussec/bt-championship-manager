@@ -134,7 +134,9 @@ export default function Index() {
                           <tbody key={champ.id}>
                             <tr
                               onClick={() =>
-                                router.push(`championships/match-list`)
+                                router.push(
+                                  `championships/match-list?id=${champ.id}`
+                                )
                               }
                               className="bg-white border-b cursor-pointer"
                             >
