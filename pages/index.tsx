@@ -6,21 +6,29 @@ import Cookies from "js-cookie";
 import moment from "moment";
 import "moment/locale/pt";
 import { Championship } from "../types/Championship";
+import { Location } from "../types/Location";
+import Swal from "sweetalert2";
 
 export const getStaticProps = async () => {
-  const res = await fetch("http://localhost:3000/api/championships");
-  const data = await res.json();
 
-  return { props: { championships: data } };
+  const [championshipsRes, locationsRes] = await Promise.all([fetch("http://localhost:3000/api/championships"), 
+  fetch("http://localhost:3000/api/locations")]);
+
+  const [championships, locations] = await Promise.all([championshipsRes.json(), locationsRes.json()]);
+  
+
+  return { props: { championships, locations } };
 };
 
-export default function Index({
-  championships,
-}: {
-  championships: Championship[];
-}) {
+
+export default function Index({  championships,locations}: {  championships: Championship[]; locations: Location[]}) 
+  {
   const router = useRouter();
   moment.locale("pt");
+  const locAmount = locations.length;
+  let atLeastOneLoc;
+  if (locAmount > 0) atLeastOneLoc = true;
+  
   return (
     <div>
       <Head>
@@ -31,7 +39,26 @@ export default function Index({
         <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
           <div className="flex w-3/4">
             <Button
-              onClick={() => router.push("championships/create")}
+              onClick={() => 
+
+                atLeastOneLoc ? router.push("championships/create") : Swal.fire({
+                  title: 'Nenhum local foi criado ainda!',
+                  text: "Deseja criar um novo local?",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Criar novo local',
+                  cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    router.push("locations/create")
+                  }
+                })
+              
+              
+              
+              }
               label="Novo campeonato"
             />
             <Button

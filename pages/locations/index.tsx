@@ -12,6 +12,7 @@ export const getStaticProps = async () => {
   return { props: { locations: data } };
 };
 
+
 export default function LocationsList({
   locations,
 }: {
@@ -34,7 +35,11 @@ export default function LocationsList({
         console.log(response);
 
         if (response.status == 204) {
-          Swal.fire("Excluído!", "A localização foi excluída", "success");
+          Swal.fire("Excluído!", "A localização foi excluída", "success").then((result) => {
+            if (result.isConfirmed) {              
+              router.reload();
+            } 
+          });
         }
       }
     });
@@ -44,7 +49,7 @@ export default function LocationsList({
     <Guest>
       <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
         <div className="w-3/4">
-          <Button onClick={() => router.back()} label="Voltar" />
+          <Button onClick={() => router.push('/')} label="Voltar" />
           <Button
             className="ml-4"
             onClick={() => router.push("locations/create")}

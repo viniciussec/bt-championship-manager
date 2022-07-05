@@ -57,7 +57,7 @@ export default function Index() {
         <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
           <div className="w-3/4 mt-2">
             <div className="w-full">
-              <Button label="Voltar" onClick={() => router.back()}></Button>
+              <Button label="Voltar" onClick={() => router.push('/')}></Button>
             </div>
           </div>
           <div className="w-3/4 p-4 mt-4 bg-white rounded-md">
