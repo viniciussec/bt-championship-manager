@@ -15,7 +15,7 @@ export default function Edit() {
   const router = useRouter();
 
   async function onSubmit() {
-    const response = await API.post("/locations", {
+    const response = await API.patch(`/locations?id=${router.query.id}`, {
       name,
       cep,
       address,
@@ -23,21 +23,23 @@ export default function Edit() {
       numberOfCourts,
     });
 
-    if (response.status === 201) {
-      router.push("/");
-      Swal.fire("Local criado com sucesso!", "", "success");
+    if (response.status === 204) {
+      router.push("/locations");
+      Swal.fire("Local editado com sucesso!", "", "success");
     }
   }
 
   useEffect(() => {
     async function load() {
-      const response = await API.get(`/locations/${router.query.id}`);
+      if (router.query.id) {
+        const response = await API.get(`/locations?id=${router.query.id}`);
 
-      setName(response.data.name);
-      setCep(response.data.cep);
-      setAddress(response.data.address);
-      setNumber(response.data.number);
-      setNumberOfCourts(response.data.numberOfCourts);
+        setName(response.data[0].name);
+        setCep(response.data[0].cep);
+        setAddress(response.data[0].address);
+        setNumber(response.data[0].number);
+        setNumberOfCourts(response.data[0].numberOfCourts);
+      }
     }
 
     load();
@@ -45,7 +47,7 @@ export default function Edit() {
 
   return (
     <Guest>
-      <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
+      <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
         <div className="flex justify-start w-3/4">
           <Button label="Voltar" onClick={() => router.back()}></Button>
         </div>

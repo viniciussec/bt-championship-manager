@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import Button from "../../components/Button";
 import Guest from "../../layouts/Guest";
 import API from "../../services/api";
@@ -61,9 +62,9 @@ export default function Index() {
     console.log(category);
   });
 
-  function onSubmit(e: any) {
+  async function onSubmit(e: any) {
     e.preventDefault();
-    API.post("/championships", {
+    const response = await API.patch("/championships?id=" + router.query.id, {
       category,
       name,
       numberOfParticipants,
@@ -74,12 +75,19 @@ export default function Index() {
       startDate,
       endDate,
     });
+
+    if (response.status === 200) {
+      router.push("/");
+      Swal.fire("Campeonato editado com sucesso!", "", "success");
+    } else {
+      Swal.fire("Erro ao editar campeonato!", "", "error");
+    }
   }
 
   return (
     <div>
       <Guest>
-        <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
+        <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
           <div className="w-3/4 mt-2">
             <div className="w-full">
               <Button label="Voltar" onClick={() => router.back()} />
@@ -160,7 +168,7 @@ export default function Index() {
                   <label htmlFor="">Número de quadras utilizadas</label>
                   <input
                     type="number"
-                    value={numberOfParticipants}
+                    value={numberOfCourts}
                     onChange={(e) => setNumberOfCourts(Number(e.target.value))}
                     className="bg-[#6EA8F7]/30 rounded-md p-2"
                   />
