@@ -2,33 +2,40 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 import Guest from "../layouts/Guest";
-import Cookies from "js-cookie";
 import moment from "moment";
 import "moment/locale/pt";
 import { Championship } from "../types/Championship";
 import { Location } from "../types/Location";
 import Swal from "sweetalert2";
+import { useUserStore } from "../store/user";
 
 export const getStaticProps = async () => {
+  const [championshipsRes, locationsRes] = await Promise.all([
+    fetch("http://localhost:3000/api/championships"),
+    fetch("http://localhost:3000/api/locations"),
+  ]);
 
-  const [championshipsRes, locationsRes] = await Promise.all([fetch("http://localhost:3000/api/championships"), 
-  fetch("http://localhost:3000/api/locations")]);
-
-  const [championships, locations] = await Promise.all([championshipsRes.json(), locationsRes.json()]);
-  
+  const [championships, locations] = await Promise.all([
+    championshipsRes.json(),
+    locationsRes.json(),
+  ]);
 
   return { props: { championships, locations } };
 };
 
-
-export default function Index({  championships,locations}: {  championships: Championship[]; locations: Location[]}) 
-  {
+export default function Index({
+  championships,
+  locations,
+}: {
+  championships: Championship[];
+  locations: Location[];
+}) {
+  const { user } = useUserStore();
   const router = useRouter();
   moment.locale("pt");
   const locAmount = locations.length;
-  let atLeastOneLoc;
-  if (locAmount > 0) atLeastOneLoc = true;
-  
+  let atLeastOneLoc = locAmount > 0;
+
   return (
     <div>
       <Head>
@@ -38,36 +45,38 @@ export default function Index({  championships,locations}: {  championships: Cha
       <Guest>
         <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
           <div className="flex w-3/4">
+            {user.type === "admin" && (
+              <Button
+                onClick={() =>
+                  atLeastOneLoc
+                    ? router.push("championships/create")
+                    : Swal.fire({
+                        title: "Nenhum local foi criado ainda!",
+                        text: "Deseja criar um novo local?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Criar novo local",
+                        cancelButtonText: "Cancelar",
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          router.push("locations/create");
+                        }
+                      })
+                }
+                label="Novo campeonato"
+              />
+            )}
+            {user.type === "admin" && (
+              <Button
+                className="ml-4"
+                onClick={() => router.push("locations/create")}
+                label="Novo local"
+              />
+            )}
             <Button
-              onClick={() => 
-
-                atLeastOneLoc ? router.push("championships/create") : Swal.fire({
-                  title: 'Nenhum local foi criado ainda!',
-                  text: "Deseja criar um novo local?",
-                  icon: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Criar novo local',
-                  cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    router.push("locations/create")
-                  }
-                })
-              
-              
-              
-              }
-              label="Novo campeonato"
-            />
-            <Button
-              className="ml-4"
-              onClick={() => router.push("locations/create")}
-              label="Novo local"
-            />
-            <Button
-              className="ml-4"
+              className={user.type === "admin" ? "ml-4" : ""}
               onClick={() => router.push("locations")}
               label="Lista de locais"
             />
@@ -110,19 +119,23 @@ export default function Index({  championships,locations}: {  championships: Cha
                           >
                             Término do Campeonato
                           </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-4 text-sm font-bold text-left text-white"
-                          >
-                            Ações
-                          </th>
+                          {user.type === "admin" && (
+                            <th
+                              scope="col"
+                              className="px-6 py-4 text-sm font-bold text-left text-white"
+                            >
+                              Ações
+                            </th>
+                          )}
                         </tr>
                       </thead>
                       {championships &&
                         championships.map((champ) => (
                           <tbody key={champ.id}>
                             <tr
-                              onClick={() => router.push(`championships/match-list`)}
+                              onClick={() =>
+                                router.push(`championships/match-list`)
+                              }
                               className="bg-white border-b cursor-pointer"
                             >
                               <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
@@ -140,16 +153,18 @@ export default function Index({  championships,locations}: {  championships: Cha
                               <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
                                 {moment(champ.endDate).format("LLL")}
                               </td>
-                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                                <Button
-                                  onClick={() =>
-                                    router.push(
-                                      `championships/edit?id=${champ.id}`
-                                    )
-                                  }
-                                  label="Editar"
-                                ></Button>
-                              </td>
+                              {user.type === "admin" && (
+                                <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                  <Button
+                                    onClick={() =>
+                                      router.push(
+                                        `championships/edit?id=${champ.id}`
+                                      )
+                                    }
+                                    label="Editar"
+                                  ></Button>
+                                </td>
+                              )}
                             </tr>
                           </tbody>
                         ))}

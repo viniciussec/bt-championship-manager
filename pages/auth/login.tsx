@@ -6,6 +6,7 @@ import API from "../../services/api";
 import Cookies from "js-cookie";
 import Router from "next/router";
 import { GetServerSidePropsContext } from "next";
+import { useUserStore } from "../../store/user";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -14,6 +15,8 @@ export const getServerSideProps = async (
   return { props: { logged: !!context.req.cookies["BeachTennis.AuthToken"] } };
 };
 export default function Login(logged: boolean) {
+  const { setUser } = useUserStore();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -25,7 +28,14 @@ export default function Login(logged: boolean) {
         email,
         password,
       });
+      console.log(response);
       if (response.status === 200) {
+        setUser({
+          name: "",
+          email: "",
+          gender: "",
+          type: response.data.type,
+        });
         Swal.fire({
           title: "Sucesso!",
           text: response.data.message,

@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import Button from "../../components/Button";
 import Guest from "../../layouts/Guest";
 import API from "../../services/api";
+import { useUserStore } from "../../store/user";
 import { Location } from "../../types/Location";
 
 export const getStaticProps = async () => {
@@ -12,13 +13,13 @@ export const getStaticProps = async () => {
   return { props: { locations: data } };
 };
 
-
 export default function LocationsList({
   locations,
 }: {
   locations: Location[];
 }) {
   const router = useRouter();
+  const { user } = useUserStore();
 
   async function deleteLocation(id: string) {
     Swal.fire({
@@ -35,11 +36,13 @@ export default function LocationsList({
         console.log(response);
 
         if (response.status == 204) {
-          Swal.fire("Excluído!", "A localização foi excluída", "success").then((result) => {
-            if (result.isConfirmed) {              
-              router.reload();
-            } 
-          });
+          Swal.fire("Excluído!", "A localização foi excluída", "success").then(
+            (result) => {
+              if (result.isConfirmed) {
+                router.reload();
+              }
+            }
+          );
         }
       }
     });
@@ -49,12 +52,14 @@ export default function LocationsList({
     <Guest>
       <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
         <div className="w-3/4">
-          <Button onClick={() => router.push('/')} label="Voltar" />
-          <Button
-            className="ml-4"
-            onClick={() => router.push("locations/create")}
-            label="Novo local"
-          />
+          <Button onClick={() => router.push("/")} label="Voltar" />
+          {user.type === "admin" && (
+            <Button
+              className="ml-4"
+              onClick={() => router.push("locations/create")}
+              label="Novo local"
+            />
+          )}
         </div>
         <div className="w-3/4 mt-6 bg-[#6EA8F7] rounded-md">
           <div className="flex flex-col">
@@ -94,12 +99,14 @@ export default function LocationsList({
                         >
                           Número de Quadras
                         </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-4 text-sm font-bold text-left text-white"
-                        >
-                          Ações
-                        </th>
+                        {user.type === "admin" && (
+                          <th
+                            scope="col"
+                            className="px-6 py-4 text-sm font-bold text-left text-white"
+                          >
+                            Ações
+                          </th>
+                        )}
                       </tr>
                     </thead>
 
@@ -121,21 +128,25 @@ export default function LocationsList({
                           <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
                             {location.numberOfCourts}
                           </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            <Button
-                              label="Editar"
-                              color="bg-yellow-500 hover:bg-yellow-600"
-                              onClick={() =>
-                                router.push("locations/edit?id=" + location.id)
-                              }
-                            ></Button>
-                            <Button
-                              className="ml-4"
-                              label="Excluir"
-                              color="bg-red-500 hover:bg-red-700"
-                              onClick={() => deleteLocation(location.id)}
-                            ></Button>
-                          </td>
+                          {user.type === "admin" && (
+                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                              <Button
+                                label="Editar"
+                                color="bg-yellow-500 hover:bg-yellow-600"
+                                onClick={() =>
+                                  router.push(
+                                    "locations/edit?id=" + location.id
+                                  )
+                                }
+                              ></Button>
+                              <Button
+                                className="ml-4"
+                                label="Excluir"
+                                color="bg-red-500 hover:bg-red-700"
+                                onClick={() => deleteLocation(location.id)}
+                              ></Button>
+                            </td>
+                          )}
                         </tr>{" "}
                       </tbody>
                     ))}
