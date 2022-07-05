@@ -6,7 +6,7 @@ export default function Index() {
   return (
     <div>
       <Guest>
-        <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
+        <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
           <div className="flex flex-col w-3/4 p-4 mt-4 bg-white rounded-md">
             <p className="text-xl font-medium">Gerenciar pontos</p>
             <div className="flex flex-col items-center justify-center">

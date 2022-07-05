@@ -87,7 +87,7 @@ export default function Index() {
   return (
     <div>
       <Guest>
-        <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
+        <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
           <div className="w-3/4 mt-2">
             <div className="w-full">
               <Button label="Voltar" onClick={() => router.back()} />

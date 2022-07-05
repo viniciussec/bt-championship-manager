@@ -4,7 +4,7 @@ import Guest from "../layouts/Guest";
 export default function Subscription() {
   return (
     <Guest>
-      <div className="bg-[#F7BC6D] h-screen flex flex-col items-center">
+      <div className="bg-[#F7BC6D] min-h-screen flex flex-col items-center">
         <div className="flex justify-start w-3/4">
           <p className="mt-4 text-2xl font-medium text-white">Inscrição</p>
         </div>

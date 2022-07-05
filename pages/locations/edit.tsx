@@ -47,7 +47,7 @@ export default function Edit() {
 
   return (
     <Guest>
-      <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
+      <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
         <div className="flex justify-start w-3/4">
           <Button label="Voltar" onClick={() => router.back()}></Button>
         </div>
