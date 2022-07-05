@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 export default function UserChampionships() {
     const router = useRouter();
     return (<>
-        <p className="font-semibold">Historico de campeonatos</p>
-        <div className="w-3/4 mt-6 bg-[#6EA8F7] rounded-md">
+        <p className="mt-4 text-xl font-semibold">Historico de campeonatos</p>
+        <div className="w-full mt-6 bg-[#6EA8F7] rounded-md">
             <div className="flex flex-col">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -22,7 +22,7 @@ export default function UserChampionships() {
                                             scope="col"
                                             className="px-6 py-4 text-sm font-bold text-left text-white"
                                         >
-                                            resultado
+                                            Resultado
                                         </th>
                                         
                                     </tr>
