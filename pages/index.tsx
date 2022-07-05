@@ -119,27 +119,18 @@ export default function Index() {
                           >
                             Término do Campeonato
                           </th>
-                          {user.type === "admin" && (
-                            <th
-                              scope="col"
-                              className="px-6 py-4 text-sm font-bold text-left text-white"
-                            >
-                              Ações
-                            </th>
-                          )}
+                          <th
+                            scope="col"
+                            className="px-6 py-4 text-sm font-bold text-left text-white"
+                          >
+                            Ações
+                          </th>
                         </tr>
                       </thead>
                       {championships &&
                         championships.map((champ) => (
                           <tbody key={champ.id}>
-                            <tr
-                              onClick={() =>
-                                router.push(
-                                  `championships/match-list?id=${champ.id}`
-                                )
-                              }
-                              className="bg-white border-b cursor-pointer"
-                            >
+                            <tr className="bg-white border-b cursor-pointer">
                               <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                                 {champ.name}
                               </td>
@@ -165,6 +156,35 @@ export default function Index() {
                                     }
                                     color="bg-yellow-500 hover:bg-yellow-600"
                                     label="Editar"
+                                  ></Button>
+                                  <Button
+                                    className="ml-1"
+                                    onClick={() =>
+                                      router.push(
+                                        `championships/match-list?id=${champ.id}`
+                                      )
+                                    }
+                                    label="Abrir"
+                                  ></Button>
+                                </td>
+                              )}
+                              {user.type !== "admin" && (
+                                <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                  <Button
+                                    color="bg-green-600 hover:bg-green-700"
+                                    onClick={() =>
+                                      router.push(`subscription?id=${champ.id}`)
+                                    }
+                                    label="Inscrever"
+                                  ></Button>
+                                  <Button
+                                    className="ml-1"
+                                    onClick={() =>
+                                      router.push(
+                                        `championships/match-list?id=${champ.id}`
+                                      )
+                                    }
+                                    label="Abrir"
                                   ></Button>
                                 </td>
                               )}
