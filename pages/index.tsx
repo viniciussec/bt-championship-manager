@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 import Guest from "../layouts/Guest";
+import Cookies from "js-cookie";
 import moment from "moment";
 import "moment/locale/pt";
 import { Championship } from "../types/Championship";

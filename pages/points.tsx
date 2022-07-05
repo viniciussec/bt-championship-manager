@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Button from "../components/Button";
 import Guest from "../layouts/Guest";
 

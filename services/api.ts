@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
 const API = axios.create({
@@ -9,11 +9,11 @@ const API = axios.create({
 });
 
 API.interceptors.request.use(
-  async function (config) {
+  async function (config : any) {
     const token = Cookies.get('BeachTennis.AuthToken');
 
     if (token !== null && token !== '') {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.authorization = `Bearer ${token}`;
     }
 
     return config;
