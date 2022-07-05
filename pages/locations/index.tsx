@@ -140,7 +140,7 @@ export default function LocationsList() {
                                     "locations/edit?id=" + location.id
                                   )
                                 }
-                              ></Button>
+                              />
                               <Button
                                 className="ml-4"
                                 label="Excluir"

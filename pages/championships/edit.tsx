@@ -208,7 +208,7 @@ export default function Index() {
                   ></textarea>
                 </div>
                 <div className="w-full">
-                  <Button label="Cadastrar" onClick={onSubmit} />
+                  <Button label="Editar" onClick={onSubmit} />
                 </div>
               </div>
             </form>

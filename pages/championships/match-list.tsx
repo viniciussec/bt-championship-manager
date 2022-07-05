@@ -1,16 +1,21 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Guest from "../../layouts/Guest";
 import API from "../../services/api";
 
+type Match = {
+
+};
+
 export default function MatchList() {
   const router = useRouter();
+  const [matches, setMatches] = useState<[]>([]);
 
   useEffect(() => {
     async function loadInfo() {
       if (router.query.id) {
-        API.get(`championships?id=${router.query.id}`);
+        const response = await API.get(`championships?id=${router.query.id}`);
       }
     }
     loadInfo();
