@@ -4,6 +4,9 @@ import Button from "../../components/Button";
 import Guest from "../../layouts/Guest";
 import API from "../../services/api";
 import Swal from "sweetalert2";
+import cepProm from 'cep-promise'
+
+
 
 export default function Create() {
   const [name, setName] = useState("");
@@ -14,7 +17,43 @@ export default function Create() {
 
   const router = useRouter();
 
+  const raiseCepError = (o) => {Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: o.message,
+  })}
+
+  const handleClick = event => {
+    event.preventDefault();
+    cepProm(cep)
+  .then((o)=>{setAddress(o.street)}).catch(raiseCepError);
+  };
+
   async function onSubmit() {
+
+    if (!name || !cep || !address || !number) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Nenhum campo pode ser vazio!',
+      })
+      return false;
+    }
+
+    let isNumCep = /^\d+$/.test(cep);
+    let isNumAddress = /^\d+$/.test(number);
+    
+    console.log(isNumAddress, isNumCep)
+
+    if (!isNumAddress || !isNumCep) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Campos de CEP e Número devem conter apenas dígitos!',
+      })
+      return false;
+    }
+
     const response = await API.post("/locations", {
       name,
       cep,
@@ -29,7 +68,9 @@ export default function Create() {
     }
   }
 
+  
   return (
+    
     <Guest>
       <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
         <div className="flex justify-start w-3/4">
@@ -48,18 +89,26 @@ export default function Create() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 type="text"
+                required
                 className="bg-[#6EA8F7]/30 rounded-md p-2"
               />
             </div>
             <div className="flex flex-col">
+              
               <label htmlFor="">CEP</label>
               <input
                 value={cep}
                 onChange={(e) => setCep(e.target.value)}
                 type="text"
                 className="bg-[#6EA8F7]/30 rounded-md p-2"
-              />
+              /> 
+              <div className="w-full">
+              <Button type="button" className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" label="Checar CEP" 
+              onClick={handleClick}></Button>
+            </div>             
             </div>
+            
+            
             <div className="flex flex-col md:col-span-2">
               <label htmlFor="">Logradouro</label>
               <input
@@ -96,7 +145,7 @@ export default function Create() {
                 label="Cadastrar"
               ></Button>
             </div>
-          </form>
+          </form>          
         </div>
       </div>
     </Guest>
