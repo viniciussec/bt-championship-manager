@@ -2,9 +2,25 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 import Guest from "../layouts/Guest";
+import Cookies from "js-cookie";
+import moment from "moment";
+import "moment/locale/pt";
+import { Championship } from "../types/Championship";
 
-export default function Index() {
+export const getStaticProps = async () => {
+  const res = await fetch("http://localhost:3000/api/championships");
+  const data = await res.json();
+
+  return { props: { championships: data } };
+};
+
+export default function Index({
+  championships,
+}: {
+  championships: Championship[];
+}) {
   const router = useRouter();
+  moment.locale("pt");
   return (
     <div>
       <Head>
@@ -12,9 +28,22 @@ export default function Index() {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Guest>
-        <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
+        <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
           <div className="flex w-3/4">
-            <Button onClick={() => router.push("create")} label="Novo campeonato" />
+            <Button
+              onClick={() => router.push("championships/create")}
+              label="Novo campeonato"
+            />
+            <Button
+              className="ml-4"
+              onClick={() => router.push("locations/create")}
+              label="Novo local"
+            />
+            <Button
+              className="ml-4"
+              onClick={() => router.push("locations")}
+              label="Lista de locais"
+            />
           </div>
           <div className="w-3/4 mt-6 bg-[#6EA8F7] rounded-md">
             <div className="flex flex-col">
@@ -34,101 +63,69 @@ export default function Index() {
                             scope="col"
                             className="px-6 py-4 text-sm font-bold text-left text-white"
                           >
+                            Descrição
+                          </th>
+                          <th
+                            scope="col"
+                            className="px-6 py-4 text-sm font-bold text-left text-white"
+                          >
                             Local
                           </th>
                           <th
                             scope="col"
                             className="px-6 py-4 text-sm font-bold text-left text-white"
                           >
-                            Início do campeonato
+                            Início do Campeonato
                           </th>
                           <th
                             scope="col"
                             className="px-6 py-4 text-sm font-bold text-left text-white"
                           >
-                            Duração
+                            Término do Campeonato
                           </th>
                           <th
                             scope="col"
                             className="px-6 py-4 text-sm font-bold text-left text-white"
                           >
-                            Status
+                            Ações
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr
-                          onClick={() => router.push("match-list")}
-                          className="bg-white border-b cursor-pointer"
-                        >
-                          <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                            Campeonato municipal
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            Arena CE
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            30/05/2022
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            1 dia
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            Inscrições Abertas
-                          </td>
-                        </tr>
-                        <tr className="bg-white border-b">
-                          <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                            Campeonato municipal
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            Arena CE
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            30/05/2022
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            1 dia
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            Inscrições Abertas
-                          </td>
-                        </tr>
-                        <tr className="bg-white border-b">
-                          <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                            Campeonato municipal
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            Arena CE
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            30/05/2022
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            1 dia
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            Inscrições Abertas
-                          </td>
-                        </tr>
-                        <tr className="bg-white border-b">
-                          <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                            Campeonato municipal
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            Arena CE
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            30/05/2022
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            1 dia
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                            Inscrições Abertas
-                          </td>
-                        </tr>
-                      </tbody>
+                      {championships &&
+                        championships.map((champ) => (
+                          <tbody key={champ.id}>
+                            <tr
+                              onClick={() => router.push(`championships/match-list`)}
+                              className="bg-white border-b cursor-pointer"
+                            >
+                              <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                {champ.name}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                {champ.description}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                {champ.location.name}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                {moment(champ.startDate).format("LLL")}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                {moment(champ.endDate).format("LLL")}
+                              </td>
+                              <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                                <Button
+                                  onClick={() =>
+                                    router.push(
+                                      `championships/edit?id=${champ.id}`
+                                    )
+                                  }
+                                  label="Editar"
+                                ></Button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        ))}
                     </table>
                   </div>
                 </div>

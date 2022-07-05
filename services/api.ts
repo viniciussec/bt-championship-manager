@@ -1,19 +1,19 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
 const API = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'http://localhost:8080',
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
 API.interceptors.request.use(
-  async function (config) {
+  async function (config : any) {
     const token = Cookies.get('BeachTennis.AuthToken');
 
     if (token !== null && token !== '') {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.authorization = `Bearer ${token}`;
     }
 
     return config;
