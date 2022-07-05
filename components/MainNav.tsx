@@ -1,16 +1,23 @@
 import Link from "next/link";
 import Image from "next/image";
-import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
-import { GetServerSidePropsContext, NextPageContext } from "next";
+import React from "react";
+import { useRouter } from "next/router";
 
 
 export default function MainNav() {
+  const router = useRouter();
+
   return (
     <div className="flex justify-between p-3 bg-white drop-shadow-xl">
-      <Link href="/" >
-        <Image className="cursor-pointer" alt="Logo" height="40" width="40" src="/logo_bt.png" />
-      </Link>
+      <div onClick={() => router.push("/")}>
+        <Image
+          className="cursor-pointer"
+          alt="Logo"
+          height="40"
+          width="40"
+          src="/logo_bt.png"
+        />
+      </div>
       <div className="flex justify-between space-x-4">
         <Link href="/auth/register">
           <button className="font-medium">Registre-se</button>

@@ -3,43 +3,45 @@ import React, { useState } from "react";
 import Button from "../../components/Button";
 import Swal from "sweetalert2";
 import API from "../../services/api";
-import Cookies from 'js-cookie';
-import { getSortedRoutes } from "next/dist/shared/lib/router/utils";
+import Cookies from "js-cookie";
 import Router from "next/router";
 import { GetServerSidePropsContext } from "next";
 
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   console.log(context.req.headers.authorization);
-  return {props: {logged: !!context.req.cookies["BeachTennis.AuthToken"]}}
-}
-export default function Login(logged : boolean) {
+  return { props: { logged: !!context.req.cookies["BeachTennis.AuthToken"] } };
+};
+export default function Login(logged: boolean) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
-  async function onSubmit () {
+  async function onSubmit() {
     try {
-        const response = await API.post("/auth/signIn", {
-          email,
-          password
+      const response = await API.post("/auth/signIn", {
+        email,
+        password,
+      });
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Sucesso!",
+          text: response.data.message,
+          icon: "success",
+          confirmButtonText: "Ok",
         });
-        if (response.status === 200) {
-          Swal.fire({
-            title: "Sucesso!",
-            text: response.data.message,
-            icon: "success",
-            confirmButtonText: "Ok",
-          });
-          Cookies.set('BeachTennis.AuthToken', response.data.token);
-          setMessageType("");
-          Router.push('/');
-        }
-      } catch (e) {
-        setMessage((e.response?.data) ? e.response.data.message : "Error no servidor.");
-        setMessageType("error");
+        Cookies.set("BeachTennis.AuthToken", response.data.token);
+        setMessageType("");
+        Router.push("/");
       }
+    } catch (e: any) {
+      setMessage(
+        e.response?.data ? e.response.data.message : "Error no servidor."
+      );
+      setMessageType("error");
+    }
   }
   return (
     <Guest>
@@ -81,9 +83,7 @@ export default function Login(logged : boolean) {
               {!!messageType.length && (
                 <label
                   className={`font-semibold text-white flex flex-col w-full p-4 space-y-1 ${
-                    messageType === "success"
-                      ? "bg-green-500"
-                      : "bg-red-500"
+                    messageType === "success" ? "bg-green-500" : "bg-red-500"
                   }`}
                   htmlFor=""
                 >

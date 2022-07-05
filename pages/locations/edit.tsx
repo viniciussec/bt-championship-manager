@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Guest from "../../layouts/Guest";
 import API from "../../services/api";
 import Swal from "sweetalert2";
 
-export default function Create() {
+export default function Edit() {
   const [name, setName] = useState("");
   const [cep, setCep] = useState("");
   const [address, setAddress] = useState("");
@@ -15,7 +15,7 @@ export default function Create() {
   const router = useRouter();
 
   async function onSubmit() {
-    const response = await API.post("/locations", {
+    const response = await API.patch(`/locations?id=${router.query.id}`, {
       name,
       cep,
       address,
@@ -23,11 +23,27 @@ export default function Create() {
       numberOfCourts,
     });
 
-    if (response.status === 201) {
+    if (response.status === 204) {
       router.push("/locations");
-      Swal.fire("Local criado com sucesso!", "", "success");
+      Swal.fire("Local editado com sucesso!", "", "success");
     }
   }
+
+  useEffect(() => {
+    async function load() {
+      if (router.query.id) {
+        const response = await API.get(`/locations?id=${router.query.id}`);
+
+        setName(response.data[0].name);
+        setCep(response.data[0].cep);
+        setAddress(response.data[0].address);
+        setNumber(response.data[0].number);
+        setNumberOfCourts(response.data[0].numberOfCourts);
+      }
+    }
+
+    load();
+  }, [router.query.id]);
 
   return (
     <Guest>
@@ -36,7 +52,7 @@ export default function Create() {
           <Button label="Voltar" onClick={() => router.back()}></Button>
         </div>
         <div className="w-3/4 p-4 mt-4 bg-white rounded-md">
-          <h1 className="text-center">Cadastrar local</h1>
+          <h1 className="text-center">Editar local</h1>
           <form
             onSubmit={onSubmit}
             className="grid grid-cols-1 gap-4 md:grid-cols-2"
