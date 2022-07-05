@@ -11,7 +11,7 @@ export default  function Register(){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("spectator");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
