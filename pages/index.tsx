@@ -8,33 +8,33 @@ import { Championship } from "../types/Championship";
 import { Location } from "../types/Location";
 import Swal from "sweetalert2";
 import { useUserStore } from "../store/user";
+import { useEffect, useState } from "react";
 
-export const getStaticProps = async () => {
-  const [championshipsRes, locationsRes] = await Promise.all([
-    fetch("http://localhost:3000/api/championships"),
-    fetch("http://localhost:3000/api/locations"),
-  ]);
-
-  const [championships, locations] = await Promise.all([
-    championshipsRes.json(),
-    locationsRes.json(),
-  ]);
-
-  return { props: { championships, locations } };
-};
-
-export default function Index({
-  championships,
-  locations,
-}: {
-  championships: Championship[];
-  locations: Location[];
-}) {
+export default function Index() {
   const { user } = useUserStore();
   const router = useRouter();
   moment.locale("pt");
-  const locAmount = locations.length;
-  let atLeastOneLoc = locAmount > 0;
+
+  const [championships, setChampionships] = useState<Championship[]>();
+  const [locations, setLocations] = useState<Location[]>([]);
+
+  useEffect(() => {
+    async function loadData() {
+      const [championshipsRes, locationsRes] = await Promise.all([
+        fetch("http://localhost:3000/api/championships"),
+        fetch("http://localhost:3000/api/locations"),
+      ]);
+
+      const [championships, locations] = await Promise.all([
+        championshipsRes.json(),
+        locationsRes.json(),
+      ]);
+
+      setChampionships(championships);
+      setLocations(locations);
+    }
+    loadData();
+  }, []);
 
   return (
     <div>
@@ -48,7 +48,7 @@ export default function Index({
             {user.type === "admin" && (
               <Button
                 onClick={() =>
-                  atLeastOneLoc
+                  locations?.length > 0
                     ? router.push("championships/create")
                     : Swal.fire({
                         title: "Nenhum local foi criado ainda!",
@@ -161,6 +161,7 @@ export default function Index({
                                         `championships/edit?id=${champ.id}`
                                       )
                                     }
+                                    color="bg-yellow-500 hover:bg-yellow-600"
                                     label="Editar"
                                   ></Button>
                                 </td>

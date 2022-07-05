@@ -4,13 +4,13 @@ import Button from "../components/Button";
 import Guest from "../layouts/Guest";
 
 export const getStaticProps = async () => {
-    const res = await fetch('http://localhost:8080/locations');
-    const data = await res.json();
+  const res = await fetch("http://localhost:8080/locations");
+  const data = await res.json();
 
-    return{props: {locations: data}}
-}
+  return { props: { locations: data } };
+};
 
-export default function LocationsList({locations}) {
+export default function LocationsList({ locations }) {
   const router = useRouter();
   return (
     <div>
@@ -19,9 +19,7 @@ export default function LocationsList({locations}) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Guest>
-      
         <div className="bg-[#F7BC6D] w-full h-screen flex flex-col items-center">
-               
           <div className="w-3/4 mt-6 bg-[#6EA8F7] rounded-md">
             <div className="flex flex-col">
               <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -62,28 +60,28 @@ export default function LocationsList({locations}) {
                           </th>
                         </tr>
                       </thead>
-                      
-                      {locations.map(location => (<tbody key={location.id}><tr                          
-                          className="bg-white border-b cursor-pointer"
-                        >
-                          <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                          {location.name}
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                          { location.cep}
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                          {location.address}
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                          {location.number }
-                          </td>
-                          <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
-                           {location.numberOfCourts}
-                          </td>
-                        </tr>     </tbody>                
-                        ))}                          
-                      
+
+                      {locations.map((location) => (
+                        <tbody key={location.id}>
+                          <tr className="bg-white border-b cursor-pointer">
+                            <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                              {location.name}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                              {location.cep}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                              {location.address}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                              {location.number}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-light text-gray-900 whitespace-nowrap">
+                              {location.numberOfCourts}
+                            </td>
+                          </tr>{" "}
+                        </tbody>
+                      ))}
                     </table>
                   </div>
                 </div>
