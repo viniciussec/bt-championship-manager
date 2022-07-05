@@ -36,7 +36,7 @@ export default  function Register(){
       }
       setMessageType("");
     } catch (e) {
-      setMessage((e.response.data) ? e.response.data.message : "Error no servidor.");
+      setMessage("Error no servidor.");
       setMessageType("error");
     }
   };
