@@ -4,7 +4,7 @@ import Button from "../components/Button";
 import Guest from "../layouts/Guest";
 
 export const getStaticProps = async () => {
-    const res = await fetch('http://localhost:3000/api/locations');
+    const res = await fetch('http://localhost:8080/locations');
     const data = await res.json();
 
     return{props: {locations: data}}

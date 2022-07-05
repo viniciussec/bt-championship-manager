@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 import Guest from "../layouts/Guest";
+import Cookies from "js-cookie";
 
 export default function Index() {
   const router = useRouter();

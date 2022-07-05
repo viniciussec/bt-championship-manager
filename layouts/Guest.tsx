@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import Link from "next/link";
 import { ReactNode } from "react";
 import MainNav from "../components/MainNav";
@@ -11,7 +12,7 @@ export default function Guest({ children }: Props) {
     <>
       <div className="flex flex-col items-stretch justify-between h-screen space-y-10">
         <div>
-          <MainNav />
+          <MainNav/>
           <main>{children}</main>
         </div>
       </div>

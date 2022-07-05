@@ -1,5 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
+import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
+import { GetServerSidePropsContext, NextPageContext } from "next";
+
 
 export default function MainNav() {
   return (
