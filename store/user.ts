@@ -20,7 +20,7 @@ export const INITIAL_STATE = {
   gender: "",
 };
 
-export const useUserStore = create<State>(
+export const useUserStore = create(
   persist(
     (set: SetState<State>) => ({
       user: INITIAL_STATE,

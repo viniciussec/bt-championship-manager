@@ -5,8 +5,7 @@ import Guest from "../../layouts/Guest";
 import API from "../../services/api";
 import Swal from "sweetalert2";
 import cepProm from 'cep-promise'
-
-
+import { cepMask } from 'masks-br';
 
 export default function Create() {
   const [name, setName] = useState("");
@@ -40,7 +39,7 @@ export default function Create() {
       return false;
     }
 
-    let isNumCep = /^\d+$/.test(cep);
+    let isNumCep = /^\d+$/.test(cep.replace('-', ''));
     let isNumAddress = /^\d+$/.test(number);
     
     console.log(isNumAddress, isNumCep)
@@ -94,13 +93,13 @@ export default function Create() {
               />
             </div>
             <div className="flex flex-col">
-              
               <label htmlFor="">CEP</label>
               <input
                 value={cep}
-                onChange={(e) => setCep(e.target.value)}
+                onChange={(e) => setCep(cepMask(e.target.value))}
                 type="text"
                 className="bg-[#6EA8F7]/30 rounded-md p-2"
+                maxLength={9}
               /> 
               <div className="w-full">
               <Button type="button" className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" label="Checar CEP" 
