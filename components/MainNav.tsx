@@ -37,7 +37,7 @@ export default function MainNav() {
         <div className="flex items-center justify-between space-x-4">
           <div className="flex items-center">
             <p>
-              Olá, <b>Nathan</b>
+              Olá, <b>{user.name} </b>
             </p>
           </div>
           <button
