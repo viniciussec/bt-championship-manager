@@ -42,8 +42,6 @@ export default function Create() {
     let isNumCep = /^\d+$/.test(cep.replace('-', ''));
     let isNumAddress = /^\d+$/.test(number);
     
-    console.log(isNumAddress, isNumCep)
-
     if (!isNumAddress || !isNumCep) {
       Swal.fire({
         icon: 'error',
@@ -53,7 +51,7 @@ export default function Create() {
       return false;
     }
 
-    const response = await API.post("/locations", {
+    try {const response = await API.post("/locations", {
       name,
       cep,
       address,
@@ -64,6 +62,17 @@ export default function Create() {
     if (response.status === 201) {
       router.push("/locations");
       Swal.fire("Local criado com sucesso!", "", "success");
+    }}
+
+    catch(error:any) {
+      {Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.response.data,
+      })
+      return false;
+    }
+
     }
   }
 

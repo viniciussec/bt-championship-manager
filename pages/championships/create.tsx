@@ -1,3 +1,4 @@
+import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -33,7 +34,37 @@ export default function Index() {
 
   async function onSubmit(e: any) {
     e.preventDefault();
-    const response = await API.post("/championships", {
+
+
+    if (!name || !numberOfParticipants || !startDate || !endDate || !enrollEndDate || !enrollStartDate) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Nenhum campo pode ser vazio!',
+      })
+      return false;
+    }
+
+    if (Date.parse(startDate)>Date.parse(endDate)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'A data de início do Campeonato deve ser anterior à data de término!',
+      })
+      return false;
+    }
+
+    if (Date.parse(enrollStartDate)>Date.parse(enrollEndDate)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'A data de início das inscrições deve ser anterior à data de término!',
+      })
+      return false;
+    }
+
+
+    try {const response = await API.post("/championships", {
       category,
       name,
       numberOfParticipants,
@@ -48,7 +79,19 @@ export default function Index() {
     if (response.status === 201) {
       router.push("/");
       Swal.fire("Campeonato criado com sucesso!", "", "success");
+    }}
+
+    catch(error:any){
+       {Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.response.data,
+      })
+      return false;
     }
+  }
+    
+    
   }
 
   return (
