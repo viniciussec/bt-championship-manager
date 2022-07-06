@@ -9,7 +9,8 @@ import Swal from "sweetalert2";
 import { useUserStore } from "../store/user";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-const Guest = dynamic(() => import("../layouts/Guest"), { ssr: false }) //<- set SSr to false
+import API from "../services/api";
+const Guest = dynamic(() => import("../layouts/Guest"), { ssr: false }); //<- set SSr to false
 
 export default function Index() {
   const { user } = useUserStore();
@@ -21,21 +22,42 @@ export default function Index() {
 
   useEffect(() => {
     async function loadData() {
-      const [championshipsRes, locationsRes] = await Promise.all([
-        fetch("http://localhost:3000/api/championships"),
-        fetch("http://localhost:3000/api/locations"),
-      ]);
+      const championshipsRes = await API.get("championships");
+      const locationsRes = await API.get("locations");
 
-      const [championships, locations] = await Promise.all([
-        championshipsRes.json(),
-        locationsRes.json(),
-      ]);
-
-      setChampionships(championships);
-      setLocations(locations);
+      setChampionships(championshipsRes.data);
+      setLocations(locationsRes.data);
     }
     loadData();
   }, []);
+
+  async function deleteChampionship(id: string) {
+    Swal.fire({
+      title: "Você tem certeza?",
+      text: "Você não poderá desfazer isso!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, excluir!",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const response = await API.delete("/championships?id=" + id);
+        console.log(response);
+
+        if (response.status == 204) {
+          Swal.fire("Excluído!", "O Campeonato foi excluída", "success").then(
+            (result) => {
+              if (result.isConfirmed) {
+                router.reload();
+              }
+            }
+          );
+        }
+      }
+    });
+  }
 
   return (
     <div>
@@ -44,7 +66,14 @@ export default function Index() {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Guest>
-        <div className="bg-[#F7BC6D] w-full min-h-screen flex flex-col items-center">
+        <div
+          style={{
+            backgroundImage:
+              'URL("https://blog.boladetenisdelivery.com/wp-content/uploads/2021/12/beach-tennis-scaled.jpg")',
+          }}
+          className="absolute w-screen h-screen -z-10 blur-sm"
+        ></div>
+        <div className="flex flex-col items-center w-full min-h-screen">
           <div className="flex w-3/4">
             {user.type === "admin" && (
               <Button
@@ -166,6 +195,12 @@ export default function Index() {
                                       )
                                     }
                                     label="Abrir"
+                                  ></Button>
+                                  <Button
+                                    className="ml-1"
+                                    color="bg-red-600 hover:bg-red-700"
+                                    onClick={() => deleteChampionship(champ.id)}
+                                    label="Excluir"
                                   ></Button>
                                 </td>
                               )}
