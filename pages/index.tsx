@@ -67,11 +67,11 @@ export default function Index() {
       </Head>
       <Guest>
         <div
-          style={{
-            backgroundImage:
-              'URL("https://blog.boladetenisdelivery.com/wp-content/uploads/2021/12/beach-tennis-scaled.jpg")',
-          }}
-          className="absolute w-screen h-screen -z-10 blur-sm"
+          // style={{
+          //   backgroundImage:
+          //     'URL("https://blog.boladetenisdelivery.com/wp-content/uploads/2021/12/beach-tennis-scaled.jpg")',
+          // }}
+          className="absolute w-screen h-screen -z-10 blur-sm bg-[#F7BC6D]"
         ></div>
         <div className="flex flex-col items-center w-full min-h-screen">
           <div className="flex w-3/4">
