@@ -50,7 +50,7 @@ export default function Participants() {
                   className="flex justify-between p-4 text-white border-b-2"
                 >
                   <div>{participant.name}</div>
-                  <div>{participant.id}</div>
+                  <div>{participant.email}</div>
                 </div>
               ))}
             </div>

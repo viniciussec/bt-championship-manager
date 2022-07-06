@@ -3,6 +3,13 @@ import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Guest from "../../layouts/Guest";
 import API from "../../services/api";
+import { useUserStore } from "../../store/user";
+
+type Participant = {
+  name: string;
+  wins: number;
+  id: string;
+};
 
 export type Match = {
   id: string;
@@ -18,17 +25,45 @@ export type Match = {
   };
   firstParticipantPoints: number;
   secondParticipantPoints: number;
+  name: string;
 };
 
 export default function MatchList() {
+  const { user } = useUserStore();
+
   const router = useRouter();
   const [matches, setMatches] = useState<Match[]>([]);
+  const [groups, setGroups] = useState<Participant[][]>([]);
 
   useEffect(() => {
     async function loadInfo() {
       if (router.query.id) {
         const response = await API.get(`championships?id=${router.query.id}`);
         setMatches(response.data[0].matches);
+
+        let groups: Participant[][] = [];
+        let participants: Participant[] = [];
+
+        response.data[0].participants.forEach(
+          (participant: Participant, index: number) => {
+            index++;
+
+            participants.push({
+              name: participant.name,
+              wins: participant.wins,
+              id: participant.id,
+            });
+
+            if (index % 4 === 0) {
+              groups.push(participants);
+              participants = [];
+            }
+          }
+        );
+
+        groups.forEach((group) => group.sort((a, b) => b.wins - a.wins));
+
+        setGroups(groups);
       }
     }
     loadInfo();
@@ -36,7 +71,7 @@ export default function MatchList() {
 
   return (
     <Guest>
-      <div className="bg-[#F7BC6D] h-screen flex flex-col items-center">
+      <div className="bg-[#F7BC6D] min-h-screen flex flex-col items-center">
         <div className="w-3/4">
           <Button label="Voltar" onClick={() => router.push("/")} />
           <Button
@@ -52,61 +87,46 @@ export default function MatchList() {
           <div className="grid grid-cols-2 gap-6 mt-4">
             <div className="flex flex-col items-center ">
               <p className="font-semibold">Tabela</p>
-              <p className="mt-4">Grupo A</p>
-              <div className="bg-[#6EA8F7] w-full mt-4 rounded-md">
-                <div className="flex justify-between p-4 text-white border-b-2">
-                  <p>Equipe 1</p>
-                  <p>6</p>
+              {groups.map((group, index) => (
+                <div
+                  key={index}
+                  className="bg-[#6EA8F7] w-full mt-4 rounded-md"
+                >
+                  {groups[index].map((group, index) => (
+                    <div
+                      key={index}
+                      className={`flex justify-between p-4 text-white border-b-2 ${
+                        index < 2 ? "bg-green-600" : ""
+                      }`}
+                    >
+                      <p>{group.name}</p>
+                      <p>{group.wins}</p>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex justify-between p-4 text-white border-b-2">
-                  <p>Equipe 2</p>
-                  <p>1</p>
-                </div>
-                <div className="flex justify-between p-4 text-white border-b-2">
-                  <p>Equipe 2</p>
-                  <p>1</p>
-                </div>
-                <div className="flex justify-between p-4 text-white">
-                  <p>Equipe 2</p>
-                  <p>1</p>
-                </div>
-              </div>
-              <p className="mt-4">Grupo B</p>
-              <div className="bg-[#6EA8F7] w-full mt-4 rounded-md">
-                <div className="flex justify-between p-4 text-white border-b-2">
-                  <p>Equipe 1</p>
-                  <p>6</p>
-                </div>
-                <div className="flex justify-between p-4 text-white border-b-2">
-                  <p>Equipe 2</p>
-                  <p>1</p>
-                </div>
-                <div className="flex justify-between p-4 text-white border-b-2">
-                  <p>Equipe 2</p>
-                  <p>1</p>
-                </div>
-                <div className="flex justify-between p-4 text-white">
-                  <p>Equipe 2</p>
-                  <p>1</p>
-                </div>
-              </div>
+              ))}
             </div>
             <div className="flex flex-col items-center ">
               <p className="font-semibold">Jogos</p>
-              <div className="mt-10"></div>
+              <div className=""></div>
               {matches.map((match) => (
-                <div
-                  onClick={() => router.push("/points?id=" + match.id)}
-                  key={match.id}
-                  className="bg-[#6EA8F7] w-full mt-4 rounded-md cursor-pointer"
-                >
-                  <div className="flex justify-between p-4 text-white border-b-2">
-                    <p>{match.firstParticipant.name}</p>
-                    <p>{match.firstParticipantPoints}</p>
-                  </div>
-                  <div className="flex justify-between p-4 text-white">
-                    <p>{match.firstParticipant.name}</p>
-                    <p>{match.secondParticipantPoints}</p>
+                <div key={match.id} className="w-full">
+                  <p className="mt-4 text-sm">{match.name}</p>
+                  <div
+                    onClick={() =>
+                      user.type === "admin" &&
+                      router.push("/points?id=" + match.id)
+                    }
+                    className="bg-[#6EA8F7] w-full mt-4 rounded-md cursor-pointer"
+                  >
+                    <div className={`flex justify-between p-4 text-white border-b-2 ${match.firstParticipantPoints > match.secondParticipantPoints && 'bg-green-600 rounded-t-md'}`}>
+                      <p>{match.firstParticipant.name}</p>
+                      <p>{match.firstParticipantPoints}</p>
+                    </div>
+                    <div className={`flex justify-between p-4 text-white ${match.secondParticipantPoints > match.firstParticipantPoints && 'bg-green-600 rounded-t-md' }`}>
+                      <p>{match.firstParticipant.name}</p>
+                      <p>{match.secondParticipantPoints}</p>
+                    </div>
                   </div>
                 </div>
               ))}
