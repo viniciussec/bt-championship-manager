@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Button from "../../components/Button";
-import Guest from "../../layouts/Guest";
 import API from "../../services/api";
 import { useUserStore } from "../../store/user";
-import { Location } from "../../types/Location";
+import dynamic from "next/dynamic";
+const Guest = dynamic(() => import("../../layouts/Guest"), { ssr: false }) //<- set SSr to false
 
 export default function LocationsList() {
   const router = useRouter();

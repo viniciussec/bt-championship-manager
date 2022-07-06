@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
-import Guest from "../layouts/Guest";
 import moment from "moment";
 import "moment/locale/pt";
 import { Championship } from "../types/Championship";
@@ -9,6 +8,8 @@ import { Location } from "../types/Location";
 import Swal from "sweetalert2";
 import { useUserStore } from "../store/user";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+const Guest = dynamic(() => import("../layouts/Guest"), { ssr: false }) //<- set SSr to false
 
 export default function Index() {
   const { user } = useUserStore();

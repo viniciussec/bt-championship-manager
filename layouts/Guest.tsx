@@ -1,12 +1,12 @@
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { ReactNode } from "react";
-import MainNav from "../components/MainNav";
+import dynamic from 'next/dynamic'
 
+const MainNav = dynamic(() => import("../components/MainNav"), { ssr: false }) //<- set SSr to false
 type Props = {
   children: ReactNode;
 };
-
 export default function Guest({ children }: Props) {
   return (
     <>
