@@ -6,7 +6,7 @@ type User = {
   email: string;
   type: string;
   gender: string;
-  avatarURL: string;
+  url: string;
 };
 
 type State = {
@@ -19,7 +19,7 @@ export const INITIAL_STATE = {
   email: "",
   type: "",
   gender: "",
-  avatarURL: "",
+  url: "",
 };
 
 export const useUserStore = create(

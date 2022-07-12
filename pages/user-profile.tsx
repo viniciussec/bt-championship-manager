@@ -17,6 +17,8 @@ export default function UserProfile() {
         "/users/getChampionships?email=" + user.email
       );
 
+
+      console.log(user)
       setChampionships(response.data.championships);
     }
 
@@ -37,15 +39,14 @@ export default function UserProfile() {
             <p className="mb-4 text-3xl font-semibold">Meu Perfil</p>
             <div
               style={{
-                backgroundImage: `url("${user.avatarURL}")`,
+                backgroundImage: `url("${user.url}")`,
                 backgroundSize: "cover",
               }}
               className="flex items-center justify-center w-40 h-40 text-4xl font-bold text-white bg-[#6EA8F7] rounded-full"
             >
-              {!user.avatarURL && user.name.charAt(0)}
+              {!user.url && user.name.charAt(0)}
             </div>
             <p className="mt-4 text-2xl font-bold">{user.name}</p>
-            <p className="mt-4 text-xl font-bold">Vitórias: 1</p>
           </div>
           <div className="col-span-3 mt-4">
             <UserMatches />

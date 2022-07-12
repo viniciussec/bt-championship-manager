@@ -17,7 +17,7 @@ export default function MainNav() {
       email: "",
       type: "",
       gender: "",
-      avatarURL: "",
+      url: "",
     });
     Swal.fire("Logout executado com sucesso!", "", "success");
     router.push("/");

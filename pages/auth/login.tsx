@@ -29,7 +29,7 @@ export default function Login() {
           email: response.data.email,
           gender: "",
           type: response.data.info.type,
-          avatarURL: response.data.avatarURL,
+          url: response.data.url,
         });
         Swal.fire({
           title: "Sucesso!",

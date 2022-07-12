@@ -9,6 +9,7 @@ type Participant = {
   name: string;
   wins: number;
   id: string;
+  user: any;
 };
 
 export type Match = {
@@ -17,11 +18,13 @@ export type Match = {
     email: string;
     id: string;
     name: string;
+    user: any;
   };
   secondParticipant: {
     email: string;
     id: string;
     name: string;
+    user: any;
   };
   firstParticipantPoints: number;
   secondParticipantPoints: number;
@@ -41,6 +44,8 @@ export default function MatchList() {
         const response = await API.get(`championships?id=${router.query.id}`);
         setMatches(response.data[0].matches);
 
+        console.log(response)
+
         let groups: Participant[][] = [];
         let participants: Participant[] = [];
 
@@ -52,6 +57,7 @@ export default function MatchList() {
               name: participant.name,
               wins: participant.wins,
               id: participant.id,
+              user: participant.user
             });
 
             if (index % 4 === 0) {
@@ -68,6 +74,8 @@ export default function MatchList() {
     }
     loadInfo();
   }, [router]);
+
+  useEffect(() => {console.log({matches})}, [matches])
 
   return (
     <Guest>
@@ -121,10 +129,29 @@ export default function MatchList() {
                   >
                     <div className={`flex justify-between p-4 text-white border-b-2 ${match.firstParticipantPoints > match.secondParticipantPoints && 'bg-green-600 rounded-t-md'}`}>
                       <p>{match.firstParticipant.name}</p>
+                      {match.firstParticipant.user && <div
+                        style={{
+                          backgroundImage: `url("${match.firstParticipant.user.url}")`,
+                         backgroundSize: "cover",
+                       }}
+                        className="flex items-center justify-center w-20 h-20 text-4xl font-bold text-white bg-[#6EA8F7] rounded-full"
+            >
+              {!match.firstParticipant.user.url && match.firstParticipant.user.name.charAt(0)}
+            </div>}
+                      
                       <p>{match.firstParticipantPoints}</p>
                     </div>
                     <div className={`flex justify-between p-4 text-white ${match.secondParticipantPoints > match.firstParticipantPoints && 'bg-green-600 rounded-t-md' }`}>
-                      <p>{match.firstParticipant.name}</p>
+                      <p>{match.secondParticipant.name}</p>
+                      {match.secondParticipant.user && <div
+                        style={{
+                          backgroundImage: `url("${match.secondParticipant.user.url}")`,
+                         backgroundSize: "cover",
+                       }}
+                        className="flex items-center justify-center w-20 h-20 text-4xl font-bold text-white bg-[#6EA8F7] rounded-full"
+            >
+              {!match.secondParticipant.user.url && match.secondParticipant.user.name.charAt(0)}
+            </div>}
                       <p>{match.secondParticipantPoints}</p>
                     </div>
                   </div>
