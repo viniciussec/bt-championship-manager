@@ -17,6 +17,7 @@ export default function MainNav() {
       email: "",
       type: "",
       gender: "",
+      url: "",
     });
     Swal.fire("Logout executado com sucesso!", "", "success");
     router.push("/");
@@ -37,7 +38,13 @@ export default function MainNav() {
         <div className="flex items-center justify-between space-x-4">
           <div className="flex items-center">
             <p>
-              Olá, <b>{user.name} </b>
+              Olá,{" "}
+              <b
+                onClick={() => router.push("/user-profile")}
+                className="cursor-pointer"
+              >
+                {user.name}{" "}
+              </b>
             </p>
           </div>
           <button

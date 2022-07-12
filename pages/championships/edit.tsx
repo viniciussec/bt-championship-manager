@@ -142,7 +142,7 @@ export default function Index() {
                   <label htmlFor="">Formato</label>
                   <select className="bg-[#6EA8F7]/30 rounded-md p-2">
                     <option value="ce">Fase de grupos</option>
-                    <option value="ce">Eliminatórias</option>
+                    {/* <option value="ce">Eliminatórias</option> */}
                   </select>
                 </div>
                 <div className="flex flex-col ">

@@ -26,9 +26,10 @@ export default function Login() {
       if (response.status === 200) {
         setUser({
           name: response.data.info.name,
-          email: "",
+          email: response.data.email,
           gender: "",
           type: response.data.info.type,
+          url: response.data.url,
         });
         Swal.fire({
           title: "Sucesso!",

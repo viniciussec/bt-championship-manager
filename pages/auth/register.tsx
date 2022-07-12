@@ -14,6 +14,7 @@ export default  function Register(){
   const [type, setType] = useState("spectator");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+  const [userImageProfile, setUserImageProfile] = useState();
 
   async function onSubmit() {
     if (confirmPassword != password) {
@@ -25,6 +26,14 @@ export default  function Register(){
       const response = await API.post("/auth/register", {
         username, password, email, type, gender: ""
       });
+
+      const {id} = response.data;
+      console.log(id);
+
+      let formData = new FormData();
+      formData.append('image',userImageProfile)
+
+      const responseImage = await API.post(`/upload?id=${id}`, userImageProfile, {headers: {"Content-Type": "image/png"}})
       console.log(response);
       if (response.status === 201) {
         Swal.fire({
@@ -132,6 +141,16 @@ export default  function Register(){
                   <option value="athlete">Atleta</option>
                   <option value="spectator">Espectador</option>
                 </select>
+              </div>
+              <div className="flex flex-col w-full p-4 space-y-1">
+                <label className="" htmlFor="">
+                  Foto
+                </label>
+                <input
+                  onChange={(e)=>setUserImageProfile(e.target.files[0])}
+                  type="file"
+                  className="p-1 border drop-shadow-lg border-1"
+                />
               </div>
               <Button
                 onClick={onSubmit}

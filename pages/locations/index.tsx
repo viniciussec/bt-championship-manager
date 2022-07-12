@@ -5,7 +5,8 @@ import Button from "../../components/Button";
 import API from "../../services/api";
 import { useUserStore } from "../../store/user";
 import dynamic from "next/dynamic";
-const Guest = dynamic(() => import("../../layouts/Guest"), { ssr: false }) //<- set SSr to false
+const Guest = dynamic(() => import("../../layouts/Guest"), { ssr: false }); //<- set SSr to false
+import { Location } from "../../types/Location";
 
 export default function LocationsList() {
   const router = useRouter();
@@ -16,12 +17,13 @@ export default function LocationsList() {
   async function deleteLocation(id: string) {
     Swal.fire({
       title: "Você tem certeza?",
-      text: "Você não poderá desfazer isso!",
+      text: "Você não poderá desfazer isso! Todos os campeonatos alocados neste local serão excluídos também!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sim, excluir!",
+      cancelButtonText: "Cancelar",
     }).then(async (result) => {
       if (result.isConfirmed) {
         const response = await API.delete("/locations?id=" + id);
@@ -42,13 +44,12 @@ export default function LocationsList() {
 
   useEffect(() => {
     async function loadData() {
-      const res = await fetch("http://localhost:3000/api/locations");
-      const data = await res.json();
+      const res = await API.get("locations");
 
-      setLocations(data);
+      setLocations(res.data);
     }
     loadData();
-  });
+  }, []);
 
   return (
     <Guest>
